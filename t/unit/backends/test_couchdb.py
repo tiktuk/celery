@@ -40,14 +40,19 @@ class test_CouchBackend:
 
         CouchBackend.get should return  and take two params
         db conn to couchdb is mocked.
-        TODO Should test on key not exists
-
         """
         x = CouchBackend(app=self.app)
         x._connection = Mock()
         get = x._connection.get = MagicMock()
-        # should return None
         assert x.get('1f3fab') == get.return_value['value']
+        x._connection.get.assert_called_once_with('1f3fab')
+
+    def test_get_non_existant_key(self):
+        x = CouchBackend(app=self.app)
+        x._connection = Mock()
+        get = x._connection.get = MagicMock()
+        get.side_effect = pycouchdb.exceptions.NotFound
+        assert x.get('1f3fab') is None
         x._connection.get.assert_called_once_with('1f3fab')
 
     def test_set(self):
