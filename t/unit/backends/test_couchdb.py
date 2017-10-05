@@ -50,6 +50,15 @@ class test_CouchBackend:
         assert x.get('1f3fab') == get.return_value['value']
         x._connection.get.assert_called_once_with('1f3fab')
 
+    def test_set(self):
+        x = CouchBackend(app=self.app)
+        x._connection = Mock()
+
+        x.set('1f3fab', 'value')
+
+        x._connection.save.assert_called_once_with({'_id': '1f3fab',
+                                                    'value': 'value'})
+
     def test_delete(self):
         """test_delete
 
