@@ -47,7 +47,7 @@ class test_CouchBackend:
         assert x.get('1f3fab') == get.return_value['value']
         x._connection.get.assert_called_once_with('1f3fab')
 
-    def test_get_non_existant_key(self):
+    def test_get_non_existent_key(self):
         x = CouchBackend(app=self.app)
         x._connection = Mock()
         get = x._connection.get = MagicMock()
