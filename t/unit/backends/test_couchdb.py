@@ -59,6 +59,41 @@ class test_CouchBackend:
         x._connection.save.assert_called_once_with({'_id': '1f3fab',
                                                     'value': 'value'})
 
+    def test_set_with_conflict(self):
+        x = CouchBackend(app=self.app)
+        x._connection = Mock()
+        x._connection.save.side_effect = (pycouchdb.exceptions.Conflict, None)
+        get = x._connection.get = MagicMock()
+
+        x.set('1f3fab', 'value')
+
+        x._connection.get.assert_called_once_with('1f3fab')
+        x._connection.get('1f3fab').__setitem__.assert_called_once_with('value', 'value')
+        x._connection.save.assert_called_with(get('1f3fab'))
+        assert x._connection.save.call_count == 2
+
+    def test_set_bytes_key(self):
+        x = CouchBackend(app=self.app)
+        x._connection = Mock()
+
+        x.set(b'1f3fab', 'value')
+
+        x._connection.save.assert_called_once_with({'_id': '1f3fab',
+                                                    'value': 'value'})
+
+    def test_set_bytes_key_with_conflict(self):
+        x = CouchBackend(app=self.app)
+        x._connection = Mock()
+        x._connection.save.side_effect = (pycouchdb.exceptions.Conflict, None)
+        get = x._connection.get = MagicMock()
+
+        x.set(b'1f3fab', 'value')
+
+        x._connection.get.assert_called_once_with('1f3fab')
+        x._connection.get('1f3fab').__setitem__.assert_called_once_with('value', 'value')
+        x._connection.save.assert_called_with(get('1f3fab'))
+        assert x._connection.save.call_count == 2
+
     def test_delete(self):
         """test_delete
 
