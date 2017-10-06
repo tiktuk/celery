@@ -30,10 +30,10 @@ class test_CouchBackend:
             module.pycouchdb = prev
 
     def test_get_container_exists(self):
-            self.backend._connection = sentinel._connection
-            connection = self.backend.connection
-            assert connection is sentinel._connection
-            self.Server.assert_not_called()
+        self.backend._connection = sentinel._connection
+        connection = self.backend.connection
+        assert connection is sentinel._connection
+        self.Server.assert_not_called()
 
     def test_get(self):
         """test_get
@@ -73,7 +73,8 @@ class test_CouchBackend:
         x.set('1f3fab', 'value')
 
         x._connection.get.assert_called_once_with('1f3fab')
-        x._connection.get('1f3fab').__setitem__.assert_called_once_with('value', 'value')
+        x._connection.get('1f3fab').__setitem__.assert_called_once_with(
+            'value', 'value')
         x._connection.save.assert_called_with(get('1f3fab'))
         assert x._connection.save.call_count == 2
 
@@ -95,7 +96,8 @@ class test_CouchBackend:
         x.set(b'1f3fab', 'value')
 
         x._connection.get.assert_called_once_with('1f3fab')
-        x._connection.get('1f3fab').__setitem__.assert_called_once_with('value', 'value')
+        x._connection.get('1f3fab').__setitem__.assert_called_once_with(
+            'value', 'value')
         x._connection.save.assert_called_with(get('1f3fab'))
         assert x._connection.save.call_count == 2
 
