@@ -7,6 +7,10 @@ from kombu.utils.url import _parse_url
 from celery.exceptions import ImproperlyConfigured
 from .base import KeyValueStoreBackend
 try:
+    import couchbase_ffi
+except ImportError:
+    pass
+try:
     from couchbase import Couchbase
     from couchbase.connection import Connection
     from couchbase.exceptions import NotFoundError
