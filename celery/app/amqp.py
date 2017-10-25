@@ -239,19 +239,19 @@ class AMQP(object):
     # and instead send directly to the queue named in the routing key.
     autoexchange = None
 
-    #: Max size of positional argument representation used for
-    #: logging purposes.
-    argsrepr_maxsize = 1024
-
-    #: Max size of keyword argument representation used for logging purposes.
-    kwargsrepr_maxsize = 1024
-
     def __init__(self, app):
         self.app = app
         self.task_protocols = {
             1: self.as_task_v1,
             2: self.as_task_v2,
         }
+
+        #: Max size of positional argument representation used for
+        #: logging purposes.
+        self.argsrepr_maxsize = self.app.conf.get('argsrepr_maxsize', 1024)
+
+        #: Max size of keyword argument representation used for logging purposes.
+        self.kwargsrepr_maxsize = self.app.conf.get('kwargsrepr_maxsize', 1024)
 
     @cached_property
     def create_task_message(self):
