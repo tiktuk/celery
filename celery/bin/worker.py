@@ -18,7 +18,7 @@ The :program:`celery worker` command (previously known as ``celeryd``)
 
     Pool implementation:
 
-    prefork (default), eventlet, gevent or solo.
+    prefork (default), eventlet, gevent, threads or solo.
 
 .. cmdoption:: -n, --hostname
 
@@ -176,7 +176,9 @@ The :program:`celery worker` command (previously known as ``celeryd``)
     Executable to use for the detached process.
 """
 from __future__ import absolute_import, unicode_literals
+
 import sys
+
 from celery import concurrency
 from celery.bin.base import Command, daemon_options
 from celery.bin.celeryd_detach import detached_celeryd
@@ -220,7 +222,8 @@ class worker(Command):
         self.maybe_detach([command] + argv)
         return self(*args, **options)
 
-    def maybe_detach(self, argv, dopts=['-D', '--detach']):
+    def maybe_detach(self, argv, dopts=None):
+        dopts = ['-D', '--detach'] if not dopts else dopts
         if any(arg in argv for arg in dopts):
             argv = [v for v in argv if v not in dopts]
             # will never return

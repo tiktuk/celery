@@ -1,9 +1,10 @@
 from __future__ import absolute_import, unicode_literals
+
 import gc
 import sys
 import time
-from celery.utils.dispatch import Signal
 
+from celery.utils.dispatch import Signal
 
 if sys.platform.startswith('java'):
 
@@ -171,4 +172,15 @@ class test_Signal:
                          dispatch_uid=uid)
         assert a_signal.receivers[0][0][0] == uid
         a_signal.disconnect(receiver_1_arg, sender=self, dispatch_uid=uid)
+        self._testIsClean(a_signal)
+
+    def test_boundmethod(self):
+        a = Callable()
+        a_signal.connect(a.a, sender=self)
+        expected = [(a.a, 'test')]
+        garbage_collect()
+        result = a_signal.send(sender=self, val='test')
+        assert result == expected
+        del a, result, expected
+        garbage_collect()
         self._testIsClean(a_signal)

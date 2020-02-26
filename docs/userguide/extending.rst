@@ -148,7 +148,7 @@ Attributes
 
 .. attribute:: hub
 
-    Event loop object (:class:`~kombu.async.Hub`). You can use
+    Event loop object (:class:`~kombu.asynchronous.Hub`). You can use
     this to register callbacks in the event loop.
 
     This is only supported by async I/O enabled transports (amqp, redis),
@@ -179,7 +179,7 @@ Attributes
 
 .. attribute:: timer
 
-    :class:`~kombu.async.timer.Timer` used to schedule functions.
+    :class:`~kombu.asynchronous.timer.Timer` used to schedule functions.
 
     Your worker bootstep must require the Timer bootstep to use this:
 
@@ -349,7 +349,7 @@ Attributes
 
 .. attribute:: hub
 
-    Event loop object (:class:`~kombu.async.Hub`). You can use
+    Event loop object (:class:`~kombu.asynchronous.Hub`). You can use
     this to register callbacks in the event loop.
 
     This is only supported by async I/O enabled transports (amqp, redis),
@@ -759,7 +759,8 @@ All bootsteps will now receive this argument as a keyword argument to
 
     class MyBootstep(bootsteps.Step):
 
-        def __init__(self, worker, enable_my_option=False, **options):
+        def __init__(self, parent, enable_my_option=False, **options):
+            super().__init__(parent, **options)
             if enable_my_option:
                 party()
 
@@ -873,8 +874,8 @@ Worker API
 ==========
 
 
-:class:`~kombu.async.Hub` - The workers async event loop
---------------------------------------------------------
+:class:`~kombu.asynchronous.Hub` - The workers async event loop
+---------------------------------------------------------------
 :supported transports: amqp, redis
 
 .. versionadded:: 3.0

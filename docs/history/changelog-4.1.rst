@@ -1,12 +1,23 @@
-.. _changelog:
+.. _changelog-4.1:
 
 ================
  Change history
 ================
 
-This document contains change notes for bugfix releases in
-the 4.1.x series (latentcall), please see :ref:`whatsnew-4.1` for
-an overview of what's new in Celery 4.1.
+.. _version-4.1.1:
+
+4.1.1
+=====
+:release-date: 2018-05-21 12:48 PM PST
+:release-by: Omer Katz
+
+.. important::
+
+	Please upgrade as soon as possible or pin Kombu to 4.1.0.
+
+- **Breaking Change**: The module `async` in Kombu changed to `asynchronous`.
+
+Contributed by **Omer Katz & Asif Saifuddin Auvi**
 
 .. _version-4.1.0:
 
@@ -174,7 +185,7 @@ an overview of what's new in Celery 4.1.
     Contributed by **Andrew de Quincey**.
 
 - **Worker**: Making missing ``*args`` and ``**kwargs`` in Task protocol 1
-return empty value in protocol 2 (Issue #3687).
+  return empty value in protocol 2 (Issue #3687).
 
     Contributed by **Roman Sichny**.
 
